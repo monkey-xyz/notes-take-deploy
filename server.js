@@ -1,7 +1,8 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const notes = require('./routes/notes')
+const notes = require('./routes/notes');
+const noteid = require('shortid');
 
 const app = express();
 const PORT = 3001;

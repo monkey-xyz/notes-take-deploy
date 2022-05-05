@@ -1,9 +1,16 @@
+const res = require('express/lib/response');
+
 const notes = require('express').Router();
 //const app = express();
 //const uniqueID = require('');
 
-notes.get('/', (req, res) =>
-    res.sendFile(path.join(__dirname, 'notes.html'))
-);
+notes.get('/api/notes', (req, res) => {
+    console.info(`${req.method} method received for notes.`);
+    readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)))
+});
+
+//notes.post('/api/notes', (req,res) => {
+    //const {}
+//});
 
 module.exports = notes;
