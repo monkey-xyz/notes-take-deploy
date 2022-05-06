@@ -1,16 +1,41 @@
-const res = require('express/lib/response');
+const fs = require('fs')
+const noteid = require('nanoid');
 
 const notes = require('express').Router();
 //const app = express();
 //const uniqueID = require('');
 
-notes.get('/api/notes', (req, res) => {
-    console.info(`${req.method} method received for notes.`);
-    readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)))
+notes.get('/api', (req, res) => {
+    console.info(`${req.method} method received for notes`);
+
+    fs.readFile('./db/db.json').then((data) => res.json(JSON.parse(data)))
 });
 
-//notes.post('/api/notes', (req,res) => {
-    //const {}
+notes.post('/api', (req,res) => {
+    const {noteTitle, noteText} = req.body;
+
+    if (noteTitle && noteText) {
+        const addNote = {
+            noteTitle,
+            noteText,
+            id: noteid(),
+        }
+
+        fs.readFile('./db/db.json', 'utf8', (err, data) => {
+            if (err) {
+                console.error(err);
+            } else {
+                fs.writeFile('./db/db.json', addNote);
+            }
+        })
+        res.json(`Your note has been added, ${noteTitle}`);
+    } else {
+        res.error(`Your note ${noteTitle} has failed to be added.`)
+    }
+});
+
+//notes.delete('/api/notes', (req,res) => {
+
 //});
 
 module.exports = notes;
