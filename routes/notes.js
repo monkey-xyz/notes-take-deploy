@@ -1,7 +1,6 @@
 const notes = require('express').Router();
 const fs = require('fs')
 const { nanoid } = require('nanoid');
-const path = require('path')
 
 notes.get('/notes', (req, res) => {
     console.info(`${req.method} method received for notes`);
@@ -11,7 +10,6 @@ notes.get('/notes', (req, res) => {
             console.error(err);
         } else {
             const noteData = JSON.parse(data);
-            console.log(data);
             return res.json(noteData);
         }
     }
@@ -27,15 +25,19 @@ notes.post('/notes', (req,res) => {
             id: nanoid(),
         }
 
-        fs.readFile('./db/db.json', 'utf8', (err) => {
+        fs.readFile('./db/db.json', 'utf8', (err, data) => {
+            
             if (err) {
                 console.error(err);
-            } else { 
-                fs.writeFile('./db/db.json', noteData, (err) => {
+            } else {
+                const noteData = JSON.parse(data);
+
+                noteData.push(addNote);
+
+                fs.writeFile('./db/db.json', JSON.stringify(noteData, null, 4), (err) => {
                     if (err) {
                         console.error(err);
                     } else {
-                        noteData.push(JSON.stringify(addNote));
                         fs.readFileSync('./db/db.json', 'utf8');
                     }
                 })
@@ -47,7 +49,9 @@ notes.post('/notes', (req,res) => {
     }
 });
 
-//notes.delete('/api/notes', (req,res) => {
+// Incomplete Delete function, will come back in future to finish this.
+
+//notes.delete('/notes/:id', (req,res) => {
 
 //});
 

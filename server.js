@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3001;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+// All of the important api routing is located in this route.
 app.use('/api', notesRoute);
 
 app.use(express.static('public'));
