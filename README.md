@@ -12,7 +12,7 @@ A live demonstration of the app is hosted through Heroku.
 
 The front-end is an application that features two pages, the Index (landing) page and the Notes page that is accessible through a button on the index.
 
-Using a JSON file, the information written into the inputs on the Notes page is saved into an array and then returned through a list column. In the future, there is a chance to return to the code to update the delete command.
+Using a JSON file, the information written into the inputs on the Notes page is saved into an array and then returned through a list column. In the future, there is a chance to return to the code to update the delete command. Otherwise, clicking the delete button will not remove an entry and will return an error in the console.
 
 The code is separated into the main script **server.js**, and a route to hold the processes for the notes, **notes.js**.
 
@@ -26,4 +26,6 @@ A blank array is provided in the **db.json** file, on the chance that the server
 
 ## Documentation
 
-TBA
+![Image of index.html](./assets/thumbnail_index.png)
+
+![Image of notes.html](./assets/thumbnail_default.png)
