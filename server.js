@@ -21,5 +21,5 @@ app.get('/notes', (req, res) =>
 );
 
 app.listen(PORT, () => 
-   console.log(`Cheers! Your app is now live at ${PORT}`)
+   console.log(`🥂 Cheers! Your app is now live at ${PORT} 🥂`)
 );

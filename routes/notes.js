@@ -10,33 +10,40 @@ notes.get('/notes', (req, res) => {
         if (err) {
             console.error(err);
         } else {
+            const noteData = JSON.parse(data);
             console.log(data);
+            return res.json(noteData);
         }
     }
 )});
 
 notes.post('/notes', (req,res) => {
-    const {noteTitle, noteText} = req.body;
+    const {title, text} = req.body;
 
-    if (noteTitle && noteText) {
+    if (title && text) {
         const addNote = {
-            noteTitle,
-            noteText,
+            title,
+            text,
             id: nanoid(),
         }
 
-        fs.readFile('./db/db.json', 'utf8', (err, data) => {
+        fs.readFile('./db/db.json', 'utf8', (err) => {
             if (err) {
                 console.error(err);
-            } else {
-                const noteData = JSON.parse(data);
-                noteData.push(addNote);
-                fs.appendFile('./db/db.json', noteData);
+            } else { 
+                fs.writeFile('./db/db.json', noteData, (err) => {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        noteData.push(JSON.stringify(addNote));
+                        fs.readFileSync('./db/db.json', 'utf8');
+                    }
+                })
             }
-        })
-        res.json(`Your note has been added, ${noteTitle}`);
+        });
+        res.json(`Your note has been added, ${title}`);
     } else {
-        res.error(`Your note ${noteTitle} has failed to be added.`)
+        res.json(`Your note ${title} has failed to be added.`);
     }
 });
 
