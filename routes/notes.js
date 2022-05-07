@@ -1,12 +1,19 @@
 const notes = require('express').Router();
 const fs = require('fs')
 const { nanoid } = require('nanoid');
+const path = require('path')
 
 notes.get('/notes', (req, res) => {
     console.info(`${req.method} method received for notes`);
 
-    fs.readFile('./db/db.json').then((data) => res.json(JSON.parse(data)))
-});
+    fs.readFile('./db/db.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+        } else {
+            console.log(data);
+        }
+    }
+)});
 
 notes.post('/notes', (req,res) => {
     const {noteTitle, noteText} = req.body;
@@ -22,9 +29,9 @@ notes.post('/notes', (req,res) => {
             if (err) {
                 console.error(err);
             } else {
-                let noteData = JSON.parse(data);
+                const noteData = JSON.parse(data);
                 noteData.push(addNote);
-                fs.writeFile('./db/db.json', noteData);
+                fs.appendFile('./db/db.json', noteData);
             }
         })
         res.json(`Your note has been added, ${noteTitle}`);
